@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: ai-codegen-backend
+    env: node
+    plan: free
+    buildCommand: cd Backend && npm install
+    startCommand: cd Backend && npm start
+    envVars:
+      - key: GEMINI_API_KEY
+        scope: build
+        sync: false
+      - key: PORT
+        value: 5000
+      - key: FRONTEND_URL
+        scope: build
+        sync: false
+
+  - type: static
+    name: ai-codegen-frontend
+    buildCommand: cd ai-com-gen && npm install && npm run build
+    staticPublishPath: ai-com-gen/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://ai-codegen-backend.onrender.com
